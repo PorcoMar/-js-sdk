@@ -1,2 +1,1 @@
-# 微信授权和js-sdk
-something...
+# wechat_app_demo

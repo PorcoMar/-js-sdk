@@ -1,0 +1,11 @@
+const app = require("../app.js");
+const port = require("../config/env.config.js").port;
+const http = require("http");
+
+/*创建服务*/
+const server = http.createServer(app);
+
+/*启动服务*/
+server.listen(port, ()=>{
+    console.log(`Server is running at port: ${port}`);
+})
