@@ -1,7 +1,9 @@
 
 
 const url = require("../../config/config.js").url
+const haoniangjiaUrl = require("../../config/config.js").haoniangjiaUrl
 const requestData = require("../utils/request").request;
+const requestList = require("../utils/request").requestList;
 
 function indexTest(){
 	var result = ["test1","test2"]
@@ -13,9 +15,44 @@ function indexTest(){
 		result.push("newOne")
 	})
 	return result;
-	
 
 }
+/**
+ * [description]
+ * @param  {[type]} back2 [description]
+ * @return {[type]}       [description]
+ */
+// let add_call = (back2) => {
+// 	let result = ['1','2']
+// 	params = {
+// 		pageSize:10,
+// 		pageNo:1
+// 	}
+// 	requestList('/information/list',params)
+// 	.then((res) => {
+// 		console.log('调用请求………………^_^')
+// 		let data = JSON.parse(res)
+// 		return `this is newData : ${data.errorMsg}`
+// 	})
+// 	.then((res) => {
+// 		result.push(res)
+// 		console.log(result)
+// 		back2(result)
+// 	}) 
+// }
+
+// let abc2 = () => {
+// 	let result = ['pp']
+// 	add_call((num) => {
+// 		console.log('num======', num)
+// 		result.push(num)
+// 		return result
+// 	})
+
+// }
+/****/
+
+
 
 var abcPromise = (callBack)=>{
 	console.log("-=-=-=-=-=--==-")

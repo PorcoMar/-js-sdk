@@ -2,6 +2,13 @@ var url = window.location.href;
 var signatureUrl = url.split("#")[0];
 //var URL = encodeURIComponent(signatureUrl);
 var URL = signatureUrl;
+
+var title = "这是分享的表标题";
+var desc = "【亦蓁家】送你300元购物大礼包，亦蓁家邀你体验高品质母婴服务";
+var shareUrl = window.location.href;
+var logo = "http://yizhenjia.com/dist/newImg/logo.png";
+SHARE(title, desc, shareUrl, logo); 
+
 $.get("/weixin?url=" + URL, function(result) {
     if (result.code == 0) {
         wx.config({
@@ -38,7 +45,101 @@ function clickMe(){
 
     })
 
+}
+/**
+ * 录音
+ * @type {String}
+ */
+let localId = ''
+let reCord = () => {
+    console.log('..........')
+    wx.startRecord();
+}
+let stopRecord = () => {  //暂时停止不了，不知道为什么
+    console.log('ooooo')
+    wx.stopRecord({
+        success: function (res) {
+         localId = res.localId;
+         alert('res.localId='+res.localId)
+        }
+    });
+}
+
+let playVoice = () => {
+    console.log('playVoice','localId= '+localId)
+    alert('localId= '+localId)
+    wx.playVoice({
+        localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
+    });
+    
+}
+
+/**
+ * 网络状态
+ */
+
+let getNetworkType = () => {
+    wx.getNetworkType({
+    success: function (res) {
+        var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
+        alert(networkType)
     }
+    });
+    
+}
+
+/**
+ * 显示地理位置
+ */
+
+let openLocation = () => {
+    wx.openLocation({
+        latitude:30.26, // 纬度，浮点数，范围为90 ~ -90
+        longitude: 120.19, // 经度，浮点数，范围为180 ~ -180。
+        name: '这里是杭州吗', // 位置名
+        address: 'porco mar', // 地址详情说明
+        scale: 7, // 地图缩放级别,整形值,范围从1~28。默认为最大
+        infoUrl: 'www.yizhenjia.com' // 在查看位置界面底部显示的超链接,可点击跳转
+    });
+    }
+
+/**
+ * 获取位置
+ */
+let getLocation = () => {
+    wx.getLocation({
+        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+        success: function (res) {
+        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+        var speed = res.speed; // 速度，以米/每秒计
+        var accuracy = res.accuracy; // 位置精度
+        console.log(latitude,longitude,speed,accuracy)
+    }
+    }); 
+}
+
+
+/**
+ * 微信扫一扫
+ */
+let scanQRCode = () => {
+    wx.scanQRCode({
+    needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+    success: function (res) {
+    var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+        alert(result)
+    }
+    });
+}
+
+
+
+
+
+
+
 
 
 function SHARE(title, desc, shareUrl, logo) {        
@@ -53,14 +154,50 @@ function SHARE(title, desc, shareUrl, logo) {
             type: '', // 分享类型,music、video或link，不填默认为link
             dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
             success: function() {
-                // 用户确认分享后执行的回调函数
-                //alert("分享成功！");
+                用户确认分享后执行的回调函数
+                alert("分享成功！");
             },
             cancel: function() {
                 // 用户取消分享后执行的回调函数
             },
             fail: function(err) {
                 alert("分享失败");
+            }
+        });
+        wx.onMenuShareTimeline({
+            title: title, // 分享标题
+            desc: desc, // 分享描述
+            link: shareUrl, // 分享链接
+            imgUrl: logo, // 分享图标
+        success: function () {
+            // 用户确认分享后执行的回调函数
+        },
+        cancel: function () {
+            // 用户取消分享后执行的回调函数
+            }
+        });
+        wx.onMenuShareQQ({
+        title: '', // 分享标题
+        desc: '', // 分享描述
+        link: '', // 分享链接
+        imgUrl: '', // 分享图标
+        success: function () {
+        // 用户确认分享后执行的回调函数
+        },
+        cancel: function () {
+        // 用户取消分享后执行的回调函数
+        }
+        });
+        wx.onMenuShareQZone({
+            title: title, // 分享标题
+            desc: desc, // 分享描述
+            link: shareUrl, // 分享链接
+            imgUrl: logo, // 分享图标
+            success: function () {
+            // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+            // 用户取消分享后执行的回调函数
             }
         });
     });
@@ -70,11 +207,7 @@ function SHARE(title, desc, shareUrl, logo) {
     });
 }       
 
-var title = "this is title /second && /userList && ";
-var desc = "【亦蓁家】送你300元购物大礼包，亦蓁家邀你体验高品质母婴服务";
-var shareUrl = window.location.href;
-var logo = "http://yizhenjia.com/dist/newImg/logo.png";
-SHARE(title, desc, shareUrl, logo); 
+
 
 
 

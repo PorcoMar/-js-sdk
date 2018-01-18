@@ -1,3 +1,6 @@
+const REQUEST = require("request");
+const haoniangjiaUrl = require('../../config/config').haoniangjiaUrl
+console.log(haoniangjiaUrl)
 let request = ()=>{
 	return new Promise((resolve,reject)=>{
 		let result = [
@@ -8,6 +11,20 @@ let request = ()=>{
 		resolve(result)
 	})
 }
+
+const requestList = (url, params) => {
+	return new Promise((resolve, reject) => {
+		REQUEST.post({
+			url: haoniangjiaUrl,
+			form: params
+		},function(err, httpResopnse, body){
+			console.log(typeof body)
+			console.log(body)
+			resolve(body)
+		})
+	})
+}
 module.exports = {
-	request : request
+	request : request,
+	requestList: requestList
 }
