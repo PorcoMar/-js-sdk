@@ -18,12 +18,41 @@ gulp.task('gulpUtil', function(){
   .pipe(gulp.dest('')) //dest到根目录下
   .pipe(connect.reload())
 })
-
+gulp.task("copy-html",function(){
+  return gulp.src("src/**/*.html")
+  .pipe(minifyhtml())
+  .pipe(gulp.dest(""))
+  .pipe(connect.reload())
+})
+gulp.task("autoprefixer",()=>{ 
+  return gulp.src(['src/**/*.css'])
+  .pipe(autoprefixer({
+    browsers:["last 2 versions"],//主流浏览器的最新两个版本
+    cascade:false //是否美化属性值 默认：true
+  }))
+  .pipe(minifycss())
+    .pipe(px2rem())
+  .pipe(gulp.dest(""))
+  .pipe(connect.reload())
+})
+gulp.task("copy-img",function(){
+  return gulp.src("public/orignalmage/**/*.{jpg,png,jpeg,gif,ico}")
+  .pipe(imageminm({
+      optimizationLevel: 5, //类型：Number  默认：3  取值范围：0-7（优化等级）
+      progressive: true, //类型：Boolean 默认：false 无损压缩jpg图片
+      interlaced: true, //类型：Boolean 默认：false 隔行扫描gif进行渲染
+      multipass: true //类型：Boolean 默认：false 多次优化svg直到完全优化
+  })) //压缩这一步如果不行就重新下载 cnpm i gulp-imagemin --save-dev
+  .pipe(gulp.dest("public/images"))
+  .pipe(connect.reload())
+})
 
 gulp.task("watch",function(){
   gulp.watch("src/**/*.js",["gulpUtil"])
+  gulp.watch("src/**/*.html",["copy-html"])
+  gulp.watch("src/**/*.css",["autoprefixer"])
+  gulp.watch("public/orignalmage/**/*.{jpg,png,gif,jpeg,ico}",['copy-img'])
 })
-
 /*server*/
 gulp.task("server",function(){
   connect.server({
