@@ -61,4 +61,7 @@ gulp.task("server",function(){
       livereload:true/*热替换（功能为即时刷新）*/
   })
 })
+gulp.task('build',['gulpUtil','copy-html','autoprefixer','copy-img'])
 gulp.task("default",["server","watch"])
+
+
