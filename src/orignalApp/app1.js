@@ -150,7 +150,7 @@ const accessTokenMiddle = require("../middlewares/accessToken.middleware.js");
 const weixin = require("../../config/env.config");
 
 router.get("/weixin",accessTokenMiddle.accessToken,accessTokenMiddle.ticket,function(req,res,next){
-    console.log("这是req.query里面的参数=>>>>>>>>>>>>>>>>>>>");
+    console.log("这是req.query里面的参数=>>>>>>>>>>>>>>>>>>>>");
     console.log(JSON.stringify(req.query));
     crypto.randomBytes(16,function(ex,buf){
         var appId = weixin.appID;

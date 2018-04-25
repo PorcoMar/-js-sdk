@@ -122,14 +122,14 @@ router.get('/third', (req,res,next) => {
 })
 
 router.get("/getUserInfo",authMiddleware.getAccess_token, authMiddleware.getUserInfo, (req,res,next)=>{
-    console.log(req.query);
+    console.log('>>>>查询的url字符串参数 ：'+req.query);
     let back_url = req.query.back_url;
     for(let item in req.query){
         if(item !== "back_url" && item !== "code" && item !== "state"){
             back_url += `&${item}=${req.query[item]}`;
         };
     };
-    console.log(back_url);
+    console.log('重新制造的back_url : '+back_url);
     res.redirect(back_url);
 });
 
