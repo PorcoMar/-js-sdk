@@ -58,12 +58,7 @@ exports.ticket = function(req, res, next) {
 };
 
 function isValide() { //有效
-    let strn = fs.readFileSync("./config/access_token.json")
-    let strn2 = strn.toString()
-    console.log('-=-=-=-=-||-=-=-===-=-=-==')
-    console.log(typeof strn , strn )
-    console.log(typeof strn2 , strn2 )
-    var result = fs.readFileSync("./config/access_token.json").toString();//同步读取json文件
+    var result = fs.readFileSync("./config/access_token.json").toString();//同步读取json文件 //这里用toString的原因：读出来的数据是一堆包含着16进制数字的对象，必须通过toString转为字符串形式
     if (result) {
         result = JSON.parse(result);
         var now = new Date().getTime();

@@ -13,8 +13,9 @@ const url = require('url');
 const cheerio = require('cheerio')
 
 
-var indexjs = require("../workJS/workJS").indexTest
-var callBack = require("../workJS/workJS").callBack
+const indexjs = require("../workJS/workJS").indexTest
+const callBack = require("../workJS/workJS").callBack
+const nodeAPI = require("../workJS/nodeAPI").api
 
 const REQUEST = require('../utils/request').requestList
 router.get("/", authMiddleware.getCode, (req,res,next)=>{
@@ -28,17 +29,17 @@ router.get("/userList", authMiddleware.getCode, (req,res,next)=>{
 });
 // router.get("/second", authMiddleware.getCode,authMiddleware.getAccess_token, (req,res,next)=>{ //我后来发现这样写没什么必要，因为在'/'时已经获取到了所有信息并存在cookie中了
 router.get("/second", authMiddleware.getCode, (req,res,next)=>{ //写authMiddleware.getCode在这里的原因是cookies失效时重新获取cookie
-        console.log("<------------------'/second'----------------------->")
+    console.log("<------------------'/second'----------------------->")
     console.log('--获取路径--')
     console.log(req.url)
-    console.log('--获取参数（对象）--')
-    console.log(req.query)
-    console.log('--获取带路由和参数--')
-    console.log(req.params)
+
+    console.log('--获取path和参数--')
     req.query.abc = 'pppppp'
     console.log(req.query)
+
     console.log('--获取路由当前安装的url路径--')
     console.log(req.baseUrl)
+    
     console.log('--获取主体和cookies--')
     console.log(req.cookies) 
     console.log(req.body)
@@ -69,37 +70,7 @@ router.get("/callBack", authMiddleware.getCode, (req,res,next)=>{
 
 router.get('/forth', authMiddleware.getCode, (req,res,next) => { //输入 ： /forth?name=porco&sex=male
     console.log('<---------------/forth-------------------->')
-//*this is crypto
-        crypto.randomBytes(6,(err, buf) => { //(size, callBack) => {}
-            if (err) throw err;
-                console.log('--------->>>>生成随机数')
-                console.log(`buf.length = ${buf.length},buf.toString('hex') = ${buf.toString('hex')}`)
-            })
-//querystring
-        console.log('--------->>>>这是测试querystring解析与格式化 URL 查询字符串')
-        console.log('req.query-----'+JSON.stringify(req.query))
-        console.log('req.path-----'+req.path)
-        console.log('req.url-----'+req.url)
-        console.log(url.parse(req.url))//如果req.url : /forth?name=porco&sex=male  则url.parse(req.url) : Url {protocol: null,slashes: null,auth: null,host: null,port: null,hostname: null,hash: null,search: '?name=porco&sex=male',query: 'name=porco&sex=male',pathname: '/forth',path: '/forth?name=porco&sex=male',href: '/forth?name=porco&sex=male' }
-        console.log('参数为'+url.parse(req.url).query || '')
-        let escapeStr = querystring.escape(req.url || '')
-        console.log(escapeStr + '对给定的 str 进行 URL 编码。') //对给定的 str 进行 URL 编码。
-        console.log(querystring.unescape(escapeStr)+ ' 对给定的 str 进行 URL 解码。')
-        console.log(querystring.parse(url.parse(req.url).query)) //typeof 为object
-        // console.log('不用转对象直接请求到带有数组的url中数组中的数据：'+querystring.parse(url.parse(req.url).query).abc[1])
-//<<<检测cheerio cheerio是node中的jquery，精简了包含了dom
-        console.log('--------->>>>检测cheerio')
-        $ = cheerio.load('<h2 class="title">这是cheerio操作dom生成的字符</h2>',{decodeEntities: false});//decodeEntities:false转为中文
-        $('h2.title').text('通过cheerio改变后的值，参数decodeEntities: false解决了乱码的问题');
-        $('h2').addClass('welcome');
-        console.log($.html())
-// utility 加密
-        console.log('--------->>>>utility 加密')
-        const utility = require('utility')
-        let name = '我是porcoMar'
-        let sha1Value = utility.sha1(name) //  混淆加密
-        let md5Value = utility.md5(name)    //md5加密
-        console.log(`name=${name},sha1Value=${sha1Value},md5Value=${md5Value}`)
+    const api = nodeAPI(req,res,next);
         
 //render
     res.render('forth',{})
