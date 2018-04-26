@@ -4,8 +4,8 @@ const appid = config.appID;
 const appsecret = config.appsecret;
 /*获取code*/
 exports.getCode = function(req,res,next){
-    console.log("cookies包含的内容：：===>>>>>>>>>>>>>>>>")
-    console.log(req.cookies);
+    console.log("<------------------获取code----------------------->");
+    console.log('--|cookies : '+ JSON.stringify(req.cookies));
     if(req.cookies.openid){
         next();
     }else{
@@ -22,7 +22,7 @@ exports.getCode = function(req,res,next){
 
 /*获取access_token*/
 exports.getAccess_token = (req,res,next)=>{
-    console.log("<------------------获取req.query----------------------->")
+    console.log("<------------------获取snsapi_base access_token----------------------->")
     console.log(JSON.stringify(req.query))
     let code = req.query.code;
     let url = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${appid}&secret=${appsecret}&code=${code}&grant_type=authorization_code `;
@@ -38,18 +38,19 @@ exports.getAccess_token = (req,res,next)=>{
 
 /*获取微信用户信息*/
 exports.getUserInfo = (req,res,next)=>{
-    console.log("<----获取微信用户信息----->")
+    console.log("<-----------------获取getUserInfo--------------------->")
     console.log('----->req.access_token : '+req.access_token);
     let access_token = req.access_token;
     let openid = req.openid;
     let url = `https://api.weixin.qq.com/sns/userinfo?access_token=${access_token}&openid=${openid}&lang=zh_CN`;
     request(url, (err,httpResponse,body)=>{
-        console.log("---->--通过access_token和openid获取到的用户个人信息----------->")
+        console.log("---->--通过access_token和openid获取到的用户个人信息 :")
         console.log(body);
         let result = JSON.parse(body);
         res.cookie("openid", result.openid, {maxAge: 24 * 60 * 60 * 1000, httpOnly: false});
-        res.cookie("nickname", result.nickname, {maxAge: 24 * 60 * 10000, httpOnly: false});
-        res.cookie("headimgurl", result.headimgurl, {maxAge: 24 * 60 * 10000, httpOnly: false});
+        res.cookie("nickname", result.nickname, {maxAge: 24 * 60 * 60 * 1000, httpOnly: false});
+        res.cookie("headimgurl", result.headimgurl, {maxAge: 24 * 60 * 60 * 10000, httpOnly: false});
+        res.cookie("unionid", result.unionid, {maxAge: 24 * 60 * 60 * 1000, httpOnly: false})
         next();
     })
 }

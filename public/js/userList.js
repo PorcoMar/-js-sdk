@@ -9,6 +9,25 @@ var shareUrl = window.location.href;
 var logo = "http://yizhenjia.com/dist/newImg/logo.png";
 SHARE(title, desc, shareUrl, logo); 
 
+/**
+ * cookies
+ */
+function getCookie(name) 
+{ 
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+ 
+    if(arr=document.cookie.match(reg))
+ 
+        return unescape(arr[2]); 
+    else 
+        return null; 
+}
+console.log(getCookie('nickname'))
+if(getCookie('nickname')){
+    let img = `<img src="${getCookie('headimgurl')}"/>`
+    $('.headimgurl').append(img)
+}
+
 $.get("/weixin?url=" + URL, function(result) {
     if (result.code == 0) {
         wx.config({

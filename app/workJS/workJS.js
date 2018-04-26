@@ -1,6 +1,5 @@
 
 
-const url = require("../../config/config.js").url
 const haoniangjiaUrl = require("../../config/config.js").haoniangjiaUrl
 const requestData = require("../utils/request").request;
 const requestList = require("../utils/request").requestList;
